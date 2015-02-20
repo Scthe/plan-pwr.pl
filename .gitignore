@@ -1,8 +1,0 @@
-/.bundle
-/db/*.sqlite3
-/log/*.log
-/tmp/*
-/public/cache/*
-/config/database.yml
-/config/application.yml
-/.ruby-version
