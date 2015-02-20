@@ -5,15 +5,18 @@ module Epure
     URL = "http://plan-pwr.pl"
     WINTER = 1.freeze
     SUMMER = 2.freeze
+    
     SEMESTERS = { "Letni" => SUMMER, "Zimowy" => WINTER }.freeze
     SEMESTERS_NAMES = SEMESTERS.invert.freeze
-    COURSE_TYPES = { "Wykład" => "W", "Ćwiczenia" => "C", "Seminarium" => "S",
-      "Zajęcia laboratoryjne" => "L", "Projekt" => "P", "Inne" => "X" }.freeze
+    
+    COURSE_TYPES = { "Wykład" => "W", "Wyklad" => "W", "Ćwiczenia" => "C", "Cwiczenia" => "C", "Seminarium" => "S",
+      "Zajęcia laboratoryjne" => "L", "Zajecia laboratoryjne" => "L", "Projekt" => "P", "Inne" => "X" }.freeze
     COURSE_TYPES_NAMES = COURSE_TYPES.invert.freeze
+    
     WEEKS = { "" => 0, "TN" => 1, "TP" => 2 }.freeze
     WEEKS_NAMES = WEEKS.invert.freeze
     WEEK_DAYS = { "pn" => 0, "wt" => 1, "śr" => 2, "cz" => 3, "pt" => 4, "sb" => 5, "nd" => 6,
-      "so" => 5, "n" => 6}.freeze
+      "so" => 5, "n" => 6, "sr" => 2}.freeze
     WEEK_DAYS_NAMES = ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"].freeze
 
     HOURS = (7..21).freeze

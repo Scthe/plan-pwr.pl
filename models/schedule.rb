@@ -1,23 +1,24 @@
-class Schedule < ActiveRecord::Base
-  attr_accessor :raw
+class Schedule
 
-  has_many :entries, :dependent => :destroy
-  has_many :color_schemes, :dependent => :destroy
-  accepts_nested_attributes_for :color_schemes
+  attr_accessor :year, :semester, :entries, :color_scheme
 
-  after_create :generate_slug
-  after_create :create_default_color_schemes
-  after_update :invalidate_cache
+  def initialize
+    @entries = []
+    @color_scheme = :default
+  end
 
   def days
     @days ||= begin
       d = entries.group_by {|e| e.week_day }
-      x = d[6].blank? ? (d[5].blank? ? 4 : 5) : 6
+      #x = d[6].blank? ? (d[5].blank? ? 4 : 5) : 6
+      blank = lambda { |day| day.nil? || day.empty?}
+      x = blank.call(d[6])  ? ( blank.call(d[5])  ? 4 : 5) : 6
       (0..x).each {|i| d[i] ||= []}
       d
     end
   end
 
+=begin
   def semester_name
     Epure::Config::SEMESTERS_NAMES[semester]
   end
@@ -42,15 +43,15 @@ class Schedule < ActiveRecord::Base
   end
 
   def set_color_scheme(name)
-    color_schemes.destroy_all
+    @color_schemes.destroy_all
     Epure::Config::COLOR_SCHEMES[name].each_pair do |type, colors|
-      cs = color_schemes.new(:background => colors[0], :border => colors[1], :font => colors[2])
+      cs = @color_schemes.new(:background => colors[0], :border => colors[1], :font => colors[2])
       cs.course_type = type
       cs.save
     end
 
-    color_schemes.reload
-    invalidate_cache
+    @color_schemes.reload
+    #invalidate_cache
   end
 
   def pwr?
@@ -69,4 +70,6 @@ class Schedule < ActiveRecord::Base
   def invalidate_cache
     Rails.cache.delete_matched("schedule:#{slug}*")
   end
+=end
+
 end

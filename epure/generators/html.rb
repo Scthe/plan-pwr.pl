@@ -21,7 +21,7 @@ module Epure
           end
         
           entries = entries.map do |e, (top, size)|
-            cls =  entry_week_wider_class(e, top, size, entries)
+            cls = entry_week_wider_class(e, top, size, entries)
             [e, top, size, cls]
           end
           [day_id, entries]
@@ -31,11 +31,12 @@ module Epure
       end
 
       def colors_css
-        @schedule.color_schemes.map do |cs|
-          ".c_#{cs.course_type} {
-            background-color: #{cs.background};
-            border-color: #{cs.border};
-            color: #{cs.font};
+        colorScheme = COLOR_SCHEMES[@schedule.color_scheme]
+        colorScheme.map do |typ,colors|
+          ".c_#{typ} {
+            background-color: #{colors[0]};
+            border-color: #{colors[1]};
+            color: #{colors[2]};
           }"
         end.join "\n"
       end

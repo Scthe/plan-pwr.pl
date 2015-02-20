@@ -1,21 +1,13 @@
 # encoding: utf-8
 
-class Entry < ActiveRecord::Base
-  # attr_accessible :course_code, :course_name, :course_type, :group_code,
-  #                 :week, :week_day, :building, :room, :lecturer,
-  #                 :start_hour, :start_min, :end_hour, :end_min
+class Entry
 
-  belongs_to :schedule
-
-  validates_presence_of :course_name, :message => "Podaj nazwe kursu"
-  validates_inclusion_of :week, :in => [0,1,2]
-  validates_inclusion_of :week_day, :in => (0..6)
-  validate :correct_time
-
-  after_update :invalidate_cache
+  attr_accessor :course_code, :course_name, :course_type, :group_code, :week, :week_day, :building, :room, :lecturer, :start_hour, :start_min, :end_hour, :end_min
 
   def location
-    [building, room].reject{|e| e.blank?}.join(" / ")
+    blank = lambda { |day| day.nil? || day.empty?}
+    [building, room].reject{|e| blank.call(e)}.join(" / ")
+    #[building, room].reject{|e| e.blank?}.join(" / ")
   end
 
   def week_name
@@ -34,6 +26,7 @@ class Entry < ActiveRecord::Base
     week == 0 || (n - week) % 2 == 0
   end
 
+=begin
   protected
 
   def self.search(term, key)
@@ -54,5 +47,6 @@ class Entry < ActiveRecord::Base
   def invalidate_cache
     schedule.invalidate_cache
   end
+=end
 
 end

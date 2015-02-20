@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+	<head>
+		<!-- <link rel="stylesheet" type="text/css" href="static/application.css"> -->
+		<link rel="stylesheet" type="text/css" href="static/main.css">
+		<link rel="stylesheet" type="text/css" href="static/schedule.css">
+		<style>
+		  <%= @generator.colors_css %>
+		</style>
+	</head>
+	<body>
+	<div id="#schedule-wrap">
+		<div class="<%= @generator.schedule_cls %>" id="schedule">
+		  <div id="schedule-main">
+			<div id="days">
+			  <% @generator.days.each do |name, _| %>
+				<div>
+				  <%= name %>
+				</div>
+			  <% end %>
+			</div>
+			<div id="hours">
+			  <% @generator.hours.each do |hour| %>
+				<div>
+				  <%= "%02d:00" % hour %>
+				</div>
+			  <% end %>
+			</div>
+			<% @generator.days.each do |name, entries| %>
+			  <div class="day">
+				<% @generator.hours.each do |hour| %>
+				  <span class="sep"></span>
+				<% end %>
+				<% entries.each do |entry, top, size, cls| %>
+				  <div class="entry" style="top: <%= top*4 %>px; height: <%= size*4 %>px">
+					<div class="c_<%= entry.course_type %> <%= cls %> wrap">
+					  <div class="h">
+						<%#= entry_time(entry) %>
+					  </div>
+					  <div class="n">
+						<%= entry.course_name %>
+					  </div>
+					  <div class="l">
+						<%= entry.location %>
+					  </div>
+					  <div class="p">
+						<%= entry.lecturer %>
+					  </div>
+					  <div class="t">
+						<%= entry.course_type %>
+					  </div>
+					  <%#= link_to "edit", [:edit, @schedule, entry], :rel => "facebox" %>
+					</div>
+				  </div>
+				<% end %>
+			  </div>
+			<% end %>
+			<div id="legend">
+			  <% @generator.course_types.each_pair do |name, code| %>
+				<span class="c_<%= code %>">
+				  <%= name %>
+				</span>
+			  <% end %>
+			</div>
+		  </div>
+		</div>
+	</div>
+	</body>
+</html>

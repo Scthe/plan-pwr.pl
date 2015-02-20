@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'Nokogiri'
+
 module Epure
   class ParserException < Exception
     attr_accessor :data
@@ -22,7 +24,8 @@ module Epure
     end
 
     def split_html(html)
-      html.split("</HTML>").reject {|e| e.blank?}.map {|e| e << "</HTML>" }
+      #html.split("</HTML>").reject {|e| e.blank?}.map {|e| e << "</HTML>" }
+      [html]
     end
 
 
@@ -35,8 +38,8 @@ module Epure
 
       @docs.each do |doc|
         semester = doc.css("td.WYBRANA").map {|e| e.content.strip}
-        schedule.year = semester[0]
-        schedule.semester = SEMESTERS[semester[1]]
+        schedule.year = "2015" # TODO Hardcoded values
+        schedule.semester = "LATO"
 
         tables = doc.css("table.KOLOROWA")
         entries = []
@@ -132,8 +135,10 @@ module Epure
       end
 
       schedule
-    rescue
-      raise ParserException.new(@html)
+    rescue Exception => e
+      #raise ParserException.new(@html)
+      raise e
     end
   end
+
 end
